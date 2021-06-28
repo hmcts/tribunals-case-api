@@ -6,10 +6,9 @@ import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.gov.hmcts.reform.sscs.model.tya.HearingRecording;
+import uk.gov.hmcts.reform.sscs.model.tya.HearingRecordingResponse;
 import uk.gov.hmcts.reform.sscs.service.requesttype.RequestTypeService;
 
-import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.ok;
@@ -27,11 +26,11 @@ public class RequestTypeController {
 
     @ApiOperation(value = "getHearingRecording",
             notes = "Returns hearing recordings given the CCD case id",
-            response = HearingRecording.class, responseContainer = "List")
+            response = HearingRecordingResponse.class)
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Hearing Recordings",
-            response = HearingRecording.class, responseContainer = "List")})
+            response = HearingRecordingResponse.class)})
     @GetMapping(value = "/{identifier}/hearingrecording", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<HearingRecording>> getHearingRecording(@PathVariable("identifier") String identifier) {
+    public ResponseEntity<HearingRecordingResponse> getHearingRecording(@PathVariable("identifier") String identifier) {
         return ok(requestTypeService.findHearingRecordings(identifier));
     }
 
