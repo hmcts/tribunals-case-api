@@ -26,7 +26,59 @@ public class RequestTypeService {
 
     public HearingRecordingResponse findHearingRecordings(String identifier) {
         Optional<SscsCaseDetails> caseDetails = onlineHearingService.getCcdCaseByIdentifier(identifier);
-        return caseDetails.map(x -> mapToHearingRecording(x.getData())).orElse(new HearingRecordingResponse());
+        return caseDetails.map(x -> mapToHearingRecordingTemp(x.getData())).orElse(new HearingRecordingResponse());
+    }
+
+    //FIXME remove this
+    private HearingRecordingResponse mapToHearingRecordingTemp(SscsCaseData sscsCaseData) {
+        return HearingRecordingResponse.builder()
+                .releasedHearingRecordings(List.of(HearingRecordingRequest.builder()
+                        .hearingId("1")
+                        .hearingDate("02/08/2020")
+                        .hearingTime("02:45")
+                        .venue("White House")
+                        .hearingRecordings(List.of(HearingRecording.builder()
+                                .fileName("Test file1.mp3")
+                                .build(),
+                                HearingRecording.builder()
+                                        .fileName("Test file1.mp3")
+                                        .build()))
+                        .build(),
+                        HearingRecordingRequest.builder()
+                                .hearingId("1")
+                                .hearingDate("02/08/2020")
+                                .hearingTime("02:45")
+                                .venue("White House")
+                                .hearingRecordings(List.of(HearingRecording.builder()
+                                        .fileName("Test file1.mp3")
+                                        .build()))
+                                .build())
+                        )
+                .outstandingHearingRecordings(List.of(HearingRecordingRequest.builder()
+                        .hearingId("2")
+                        .hearingDate("02/08/2020")
+                        .hearingTime("02:45")
+                        .venue("White House 2")
+                        .build(),
+                        HearingRecordingRequest.builder()
+                                .hearingId("2")
+                                .hearingDate("02/08/2020")
+                                .hearingTime("02:45")
+                                .venue("White House 2")
+                                .build()))
+                .requestableHearingRecordings(List.of(HearingRecordingRequest.builder()
+                        .hearingId("1")
+                        .hearingDate("02/08/2020")
+                        .hearingTime("02:45")
+                        .venue("White House 3")
+                        .build(),
+                        HearingRecordingRequest.builder()
+                                .hearingId("2")
+                                .hearingDate("02/08/2020")
+                                .hearingTime("02:45")
+                                .venue("White House 2")
+                                .build()))
+                .build();
     }
 
     private HearingRecordingResponse mapToHearingRecording(SscsCaseData sscsCaseData) {
@@ -99,5 +151,10 @@ public class RequestTypeService {
             return sscsHearingRecordings.stream().anyMatch(r -> r.getValue().getHearingId().equals(hearing.getValue().getHearingId()));
         }
         return false;
+    }
+
+    public boolean requestHearingRecordings(String identifier, List<String> hearingIds) {
+        log.info("Hearing recordings request for {}", hearingIds);
+        return true;
     }
 }
