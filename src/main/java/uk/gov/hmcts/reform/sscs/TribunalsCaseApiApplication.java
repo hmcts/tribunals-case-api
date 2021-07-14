@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -28,7 +29,7 @@ import uk.gov.hmcts.reform.sscs.docmosis.service.DocmosisPdfGenerationService;
                 "uk.gov.hmcts.reform.sscs.thirdparty",
                 "uk.gov.hmcts.reform.idam"
         })
-@ComponentScan(basePackages = {"uk.gov.hmcts.reform"})
+@ComponentScan(basePackages = {"uk.gov.hmcts.reform"}, excludeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, pattern = "uk.gov.hmcts.reform.ccd.document.am.config.ClientConfiguration")})
 @EnableScheduling
 public class TribunalsCaseApiApplication {
 
